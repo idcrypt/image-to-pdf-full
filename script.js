@@ -8,36 +8,13 @@ const downloadPDFBtn = document.getElementById("downloadPDFBtn");
 const pdfSizeSelect = document.getElementById("pdfSize");
 
 const cropModal = document.getElementById("cropModal");
+const cropImage = document.getElementById("cropImage");
+const previewBox = document.querySelector(".preview-box");
 
-// Struktur modal
-const cropContent = document.createElement("div");
-cropContent.className = "crop-content";
-
-const previewBox = document.createElement("div");
-previewBox.className = "crop-preview-box";
-const cropPreview = document.createElement("img");
-previewBox.appendChild(cropPreview);
-
-const cropBox = document.createElement("div");
-cropBox.className = "crop-box";
-const cropImage = document.createElement("img");
-cropBox.appendChild(cropImage);
-
-const cropButtons = document.createElement("div");
-cropButtons.className = "crop-buttons";
-const applyBtn = document.createElement("button");
-applyBtn.textContent = "Apply";
-applyBtn.className = "btn-apply";
-const cancelBtn = document.createElement("button");
-cancelBtn.textContent = "Cancel";
-cancelBtn.className = "btn-cancel";
-cropButtons.appendChild(applyBtn);
-cropButtons.appendChild(cancelBtn);
-
-cropContent.appendChild(previewBox);
-cropContent.appendChild(cropBox);
-cropContent.appendChild(cropButtons);
-cropModal.appendChild(cropContent);
+const applyBtn = document.getElementById("applyBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+const rotateLeftBtn = document.getElementById("rotateLeftBtn");
+const rotateRightBtn = document.getElementById("rotateRightBtn");
 
 let photos = [];
 let cropper = null;
@@ -47,22 +24,33 @@ addPhotoBtn.addEventListener("click", () => {
   photoInput.click();
 });
 
-// Load foto dari input
+// Load foto dari input (multiple)
 photoInput.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
+  const files = Array.from(event.target.files);
+  if (!files.length) return;
 
+  handleFilesSequentially(files);
+});
+
+// Proses file satu per satu dengan crop
+function handleFilesSequentially(files) {
+  if (files.length === 0) return;
+
+  const file = files.shift();
   const reader = new FileReader();
   reader.onload = (e) => {
     if (!e.target.result) return;
-    openCropper(e.target.result);
+    openCropper(e.target.result, () => {
+      // setelah apply/cancel, lanjut file berikutnya
+      handleFilesSequentially(files);
+    });
   };
   reader.readAsDataURL(file);
-});
+}
 
-// Fungsi buka cropper
-function openCropper(imgSrc) {
-  cropModal.classList.add("show");
+// Fungsi buka cropper modal
+function openCropper(imgSrc, callback) {
+  cropModal.style.display = "flex";
   cropImage.src = imgSrc;
 
   if (cropper) cropper.destroy();
@@ -71,37 +59,42 @@ function openCropper(imgSrc) {
     autoCropArea: 1,
     responsive: true,
     background: false,
-    ready() {
-      const updatePreview = () => {
-        const canvas = cropper.getCroppedCanvas({ width: 120, height: 120 });
-        cropPreview.src = canvas.toDataURL("image/jpeg");
-      };
-      cropImage.addEventListener("crop", updatePreview);
-      updatePreview();
-    },
+    preview: previewBox,
   });
-}
 
-// Apply
-applyBtn.addEventListener("click", () => {
-  if (!cropper) return;
-  const canvas = cropper.getCroppedCanvas();
-  photos.push(canvas.toDataURL("image/jpeg"));
-  renderPhotos();
+  // Apply
+  applyBtn.onclick = () => {
+    if (!cropper) return;
+    const canvas = cropper.getCroppedCanvas();
+    photos.push(canvas.toDataURL("image/jpeg"));
+    renderPhotos();
 
-  cropper.destroy();
-  cropper = null;
-  cropModal.classList.remove("show");
-});
-
-// Cancel
-cancelBtn.addEventListener("click", () => {
-  if (cropper) {
     cropper.destroy();
     cropper = null;
-  }
-  cropModal.classList.remove("show");
-});
+    cropModal.style.display = "none";
+    if (callback) callback();
+  };
+
+  // Cancel
+  cancelBtn.onclick = () => {
+    if (cropper) {
+      cropper.destroy();
+      cropper = null;
+    }
+    cropModal.style.display = "none";
+    if (callback) callback();
+  };
+
+  // Rotate left
+  rotateLeftBtn.onclick = () => {
+    if (cropper) cropper.rotate(-90);
+  };
+
+  // Rotate right
+  rotateRightBtn.onclick = () => {
+    if (cropper) cropper.rotate(90);
+  };
+}
 
 // Render preview foto
 function renderPhotos() {
