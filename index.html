@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to PDF with Crop</title>
+
+  <!-- CropperJS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Style -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📸 Image to PDF</h1>
+
+    <!-- Input -->
+    <button id="addPhotoBtn" class="icon-btn">
+      <img src="https://img.icons8.com/ios-glyphs/30/ffffff/camera.png" alt="camera"> Add Photo
+    </button>
+    <input type="file" id="photoInput" accept="image/*" capture="environment" style="display:none">
+
+    <!-- Photo List -->
+    <div id="photoList" class="photo-list"></div>
+
+    <!-- PDF Options -->
+    <select id="pdfSize" class="icon-btn">
+      <option value="A4">A4</option>
+      <option value="F4">F4</option>
+    </select>
+
+    <button id="downloadPDFBtn" class="icon-btn">
+      <img src="https://img.icons8.com/ios-glyphs/30/ffffff/pdf.png" alt="pdf"> Download PDF
+    </button>
+  </div>
+
+  <!-- Crop Modal -->
+  <div id="cropModal"></div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
