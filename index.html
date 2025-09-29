@@ -5,8 +5,8 @@
   <title>PDF to Flipbook Tool</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- PDF.js UMD build -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.min.js"></script>
+  <!-- PDF.js UMD build (global pdfjsLib) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <script src="https://unpkg.com/st-pageflip/dist/js/pageflip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -18,6 +18,7 @@
     <button id="download-btn" disabled>Download Flipbook</button>
     <div id="flipbook-container"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
