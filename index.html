@@ -1,58 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Image to PDF Full</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/cropper.min.css" />
+  <meta charset="UTF-8">
+  <title>PDF to Flipbook Tool</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- PDF.js UMD build -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.12.313/pdf.min.js"></script>
+  <script src="https://unpkg.com/st-pageflip/dist/js/pageflip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Image to PDF Converter</h1>
-
-    <div class="controls">
-      <button id="addPhotoBtn">
-        <img src="assets/icons/camera.svg" alt="camera" />
-        Add Photos
-      </button>
-      <input type="file" id="photoInput" accept="image/*" multiple />
-      <select id="pdfSize">
-        <option value="A4">A4</option>
-        <option value="F4">F4</option>
-      </select>
-      <button id="downloadPDFBtn">
-        <img src="assets/icons/download.svg" alt="download" />
-        Download PDF
-      </button>
-    </div>
-
-    <div id="photoList" class="photo-list"></div>
+    <h1>PDF to Flipbook Tool</h1>
+    <input type="file" id="pdf-upload" accept="application/pdf">
+    <button id="download-btn" disabled>Download Flipbook</button>
+    <div id="flipbook-container"></div>
   </div>
-
-  <!-- Modal untuk Crop -->
-  <div id="cropModal" class="modal">
-    <div class="modal-content">
-      <div class="crop-wrapper">
-        <div class="crop-preview">
-          <h3>Preview</h3>
-          <div class="preview-box"></div>
-        </div>
-        <div class="crop-area">
-          <img id="cropImage" />
-        </div>
-      </div>
-      <div class="modal-buttons">
-        <button id="rotateLeftBtn">⟲ Rotate Left</button>
-        <button id="rotateRightBtn">⟳ Rotate Right</button>
-        <button id="applyBtn">Apply</button>
-        <button id="cancelBtn">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="js/cropper.min.js"></script>
-  <script src="js/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
